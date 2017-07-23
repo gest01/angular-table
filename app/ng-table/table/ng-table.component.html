@@ -1,36 +1,32 @@
-<table class="table dataTable" ngClass="{{config.className || ''}}" role="grid" style="width: 100%;">
+<table class="table dataTable" ngClass="{{config.cssClasses || ''}}" role="grid" style="width: 100%;">
+
   <thead>
     <tr role="row">
-      <th *ngFor="let column of columns" [ngTableSorting]="config" [column]="column" (sortChanged)="onChangeTable($event)" ngClass="{{column.className || ''}}">
+      <th *ngFor="let column of config.columns" class="clickable" ngClass="{{column.cssClasses || ''}}"  [ngTableSorting]="config" [column]="column" (sortChanged)="onChangeTable($event)" >
         {{column.title}}
         <i *ngIf="config && column.sort" class="glyphicon" [ngClass]="{'glyphicon-chevron-down': column.sort === 'desc', 'glyphicon-chevron-up': column.sort === 'asc'}"></i>
       </th>
     </tr>
   </thead>
+
   <tbody>
     <tr *ngIf="config.showFilterRow">
-      <td *ngFor="let column of columns">
+      <td *ngFor="let column of config.columns">
         <span [ngSwitch]="column.filterType">
-
-          <span *ngSwitchCase="'google'">
-             hello
-          </span>
-
         <span *ngSwitchCase="'select'">
-             <select class="form-control" [ngTableFiltering]="column.filtering" (tableChanged)="onChangeTable(config)">
+             <select class="form-control input-sm" [ngTableFiltering]="column.filtering" (tableChanged)="onChangeTable(config)">
                <option *ngFor="let c of column.filterData" [value]="c.id" >{{c.name}}</option>
              </select>
           </span>
-
         <span *ngSwitchDefault>
-            <input *ngIf="column.filtering" placeholder="{{column.filtering.placeholder}}" [ngTableFiltering]="column.filtering" class="form-control" (tableChanged)="onChangeTable(config)" />
+            <input *ngIf="column.filtering" placeholder="{{column.filtering.placeholder}}" [ngTableFiltering]="column.filtering" class="form-control input-sm" (tableChanged)="onChangeTable(config)" />
           </span>
         </span>
 
       </td>
     </tr>
-    <tr *ngFor="let row of rows">
-      <td (click)="cellClick(row, column.name)" *ngFor="let column of columns" [innerHtml]="sanitize(getData(row, column.name))"></td>
+    <tr *ngFor="let row of rows" class="clickable">
+      <td (click)="cellClick(row, column.name)" *ngFor="let column of config.columns" [innerHtml]="sanitize(getData(row, column.name))"></td>
     </tr>
   </tbody>
 </table>

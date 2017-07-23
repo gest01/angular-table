@@ -7,7 +7,6 @@ import { HttpModule, Http } from "@angular/http";
 import { AppComponent } from "./app.component";
 import { NavComponent } from "./nav.component";
 import { HomeComponent } from "./home.component";
-import { NotFoundComponent } from "./notfound.component";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { Ng2TableModule } from "./ng-table/ng-table-module";
@@ -24,7 +23,6 @@ import { Ng2TableModule } from "./ng-table/ng-table-module";
     AppComponent,
     NavComponent,
     HomeComponent,
-    NotFoundComponent,
   ],
   providers: [
   ],

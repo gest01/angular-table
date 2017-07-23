@@ -1,19 +1,13 @@
+import { ITableColumn, ITableConfig } from "./tableconfig";
 import { Directive, EventEmitter, Input, Output, HostListener } from "@angular/core";
 
 @Directive({ selector: "[ngTableSorting]" })
 export class NgTableSortingDirective {
-  @Input() public ngTableSorting: any;
-  @Input() public column: any;
-  @Output() public sortChanged: EventEmitter<any> = new EventEmitter();
 
-  @Input()
-  public get config(): any {
-    return this.ngTableSorting;
-  }
+  @Input() public ngTableSorting: ITableConfig;
 
-  public set config(value: any) {
-    this.ngTableSorting = value;
-  }
+  @Input() public column: ITableColumn;
+  @Output() public sortChanged: EventEmitter<ITableColumn> = new EventEmitter();
 
   @HostListener("click", ["$event"])
   public onToggleSort(event: any): void {
@@ -21,7 +15,7 @@ export class NgTableSortingDirective {
       event.preventDefault();
     }
 
-    if (this.ngTableSorting && this.column && this.column.sort !== false) {
+    if (this.column && this.column.enableSorting !== false) {
       switch (this.column.sort) {
         case "asc":
           this.column.sort = "desc";

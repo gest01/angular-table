@@ -1,3 +1,4 @@
+import { ITableConfig } from "./ng-table/table/tableconfig";
 import * as Rx from "rxjs";
 import { Component } from "@angular/core";
 
@@ -9,30 +10,28 @@ export class HomeComponent {
 
     public rows: any[] = [];
 
-    public columns: any[] = [
-        { title: "ID", name: "id", sort: false, type: "google" },
-        { title: "Name", className: "text-warning", name: "name", filtering: { filterString: "", placeholder: "Filter by name" } },
-        {
-            title: "Type",
-            name: "type",
-            filterType: "select",
-            filterData: [{ id: 1, name: "f1" }, { id: 2, name: "f2" }, { id: 3, name: "f3" }],
-            filtering: { placeholder: "Filter by type" },
-        },
-    ];
-
     public page: number = 1;
     public itemsPerPage: number = 10;
     public maxSize: number = 5;
     public numPages: number = 1;
     public length: number = 0;
 
-    public config: any = {
+    public config: ITableConfig = {
         paging: true,
-        sorting: { columns: this.columns },
-        filtering: { filterString: "" },
-        className: ["table-striped", "table-bordered"],
         showFilterRow: true,
+        cssClasses: "table-striped table-bordered table-condensed table-hover",
+        filtering: { filterString: "" },
+        columns: [
+            { title: "ID", name: "id", enableSorting: false },
+            { title: "Name", cssClasses: "text-warning", name: "name", filtering: { filterString: "", placeholder: "Filter by name" } },
+            {
+                title: "Type",
+                name: "type",
+                filterType: "select",
+                filterData: [{ id: 1, name: "f1" }, { id: 2, name: "f2" }, { id: 3, name: "f3" }],
+                filtering: { placeholder: "Filter by type" },
+            },
+        ],
     };
 
     private data: any[];
@@ -54,18 +53,15 @@ export class HomeComponent {
         return data.slice(start, end);
     }
 
-    public changeSort(data: any, config: any): any {
-        if (!config.sorting) {
-            return data;
-        }
+    public changeSort(data: any, config: ITableConfig): any {
 
-        const columns = this.config.sorting.columns || [];
+        const columns = this.config.columns || [];
         let columnName: string = void 0;
         let sort: string = void 0;
 
         // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < columns.length; i++) {
-            if (columns[i].sort !== "" && columns[i].sort !== false) {
+            if (columns[i].sort !== "" && columns[i].enableSorting !== false) {
                 columnName = columns[i].name;
                 sort = columns[i].sort;
             }
@@ -86,9 +82,9 @@ export class HomeComponent {
         });
     }
 
-    public changeFilter(data: any, config: any): any {
+    public changeFilter(data: any, config: ITableConfig): any {
         let filteredData: any[] = data;
-        this.columns.forEach((column: any) => {
+        config.columns.forEach((column: any) => {
             if (column.filtering) {
                 filteredData = filteredData.filter((item: any) => {
 
@@ -113,7 +109,7 @@ export class HomeComponent {
         const tempArray: any[] = [];
         filteredData.forEach((item: any) => {
             let flag = false;
-            this.columns.forEach((column: any) => {
+            config.columns.forEach((column: any) => {
                 if (item[column.name].toString().match(this.config.filtering.filterString)) {
                     flag = true;
                 }
@@ -133,7 +129,7 @@ export class HomeComponent {
         }
 
         if (config.sorting) {
-            Object.assign(this.config.sorting, config.sorting);
+            //Object.assign(this.config.sorting, config.sorting);
         }
 
         const filteredData = this.changeFilter(this.data, this.config);

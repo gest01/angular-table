@@ -25,7 +25,7 @@
 
       </td>
     </tr>
-    <tr *ngFor="let row of rows" class="clickable">
+    <tr *ngFor="let row of data" class="clickable">
       <td (click)="cellClick(row, column.name)" *ngFor="let column of config.columns" [innerHtml]="sanitize(getData(row, column.name))"></td>
     </tr>
   </tbody>

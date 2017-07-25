@@ -5,10 +5,7 @@ import { FormsModule } from "@angular/forms";
 import { HttpModule, Http } from "@angular/http";
 
 import { AppComponent } from "./app.component";
-import { NavComponent } from "./nav.component";
-import { HomeComponent } from "./home.component";
 
-import { AppRoutingModule } from "./app-routing.module";
 import { Ng2TableModule } from "./ng-table/ng-table-module";
 
 @NgModule({
@@ -17,12 +14,9 @@ import { Ng2TableModule } from "./ng-table/ng-table-module";
     FormsModule,
     HttpModule,
     Ng2TableModule,
-    AppRoutingModule,
   ],
   declarations: [
     AppComponent,
-    NavComponent,
-    HomeComponent,
   ],
   providers: [
   ],

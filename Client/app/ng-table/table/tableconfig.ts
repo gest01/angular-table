@@ -13,7 +13,7 @@ export interface ITableConfig {
     cssClasses?: string;
     filtering: any;
     columns: ITableColumn[];
-    loader: IDataLoader;
+    getData: IDataLoader;
     pagerSizes?: number[];
     defaultPageSize?: number;
 }
@@ -31,4 +31,5 @@ export interface ITableColumn {
     cssClasses?: string;
     sort?: string;
     enableSorting?: boolean;
+    format?: string;
 }

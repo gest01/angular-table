@@ -1,7 +1,6 @@
 import { COMPONENT_VARIABLE } from "@angular/platform-browser/src/dom/dom_renderer";
 import { ITableColumn, ITableConfig } from "./tableconfig";
 import { Component, EventEmitter, Input, Output, OnInit } from "@angular/core";
-import { DomSanitizer, SafeHtml } from "@angular/platform-browser";
 import * as Rx from "rxjs";
 
 @Component({
@@ -12,8 +11,6 @@ export class NgTableComponent implements OnInit {
 
   @Input() public config: ITableConfig;
 
-  // Outputs (Events)
-  @Output() public tableChanged: EventEmitter<any> = new EventEmitter();
   @Output() public cellClicked: EventEmitter<any> = new EventEmitter();
 
   public data: any[];
@@ -21,17 +18,10 @@ export class NgTableComponent implements OnInit {
   public currentPage: number;
   public pages: number[] = [];
 
-  public constructor(private sanitizer: DomSanitizer) {
-  }
-
   public ngOnInit(): void {
     this.currentPageSize = this.config.defaultPageSize;
     this.currentPage = 1;
     this.loadData();
-  }
-
-  public sanitize(html: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
   public onChangeTable(column: ITableColumn): void {
@@ -45,7 +35,7 @@ export class NgTableComponent implements OnInit {
   }
 
   public getData(row: any, propertyName: string): string {
-    return propertyName.split(".").reduce((prev: any, curr: string) => prev[curr], row);
+    return row[propertyName];
   }
 
   public cellClick(row: any, column: any): void {
@@ -65,12 +55,13 @@ export class NgTableComponent implements OnInit {
 
   private loadData(): void {
     const filter = this.getFilter();
-    this.config.loader(filter).subscribe((tableData) => {
+    this.config.getData(filter).subscribe((tableData) => {
       this.data = tableData.data;
 
       this.pages = [];
       const totalPages = tableData.total / this.currentPageSize;
-      for (let i = 1; i <= totalPages; i++) {
+      const offset = (tableData.total % this.currentPageSize) > 0 ? 1 : 0;
+      for (let i = 1; i <= (totalPages + offset); i++) {
         this.pages.push(i);
       }
     });

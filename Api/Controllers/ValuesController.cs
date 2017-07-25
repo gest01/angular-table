@@ -36,7 +36,7 @@ namespace Api.Controllers
             int typeCount = 0;
 
             List<Data> values = new List<Data>();
-            for (int i = 0; i < 480; i++)
+            for (int i = 1; i < 476; i++)
             {
                 values.Add(new Data
                 {

@@ -18,12 +18,15 @@ export class NgTableComponent implements OnInit {
 
   public data: any[];
   public currentPageSize: number;
+  public currentPage: number;
+  public pages: number[] = [];
 
   public constructor(private sanitizer: DomSanitizer) {
   }
 
   public ngOnInit(): void {
     this.currentPageSize = this.config.defaultPageSize;
+    this.currentPage = 1;
     this.loadData();
   }
 
@@ -51,13 +54,25 @@ export class NgTableComponent implements OnInit {
 
   public changePageSize(pageSize: number) {
     this.currentPageSize = pageSize;
+    this.currentPage = 1;
+    this.loadData();
+  }
+
+  public changePage(page: number) {
+    this.currentPage = page;
     this.loadData();
   }
 
   private loadData(): void {
     const filter = this.getFilter();
-    this.config.loader(filter).subscribe((data) => {
-      this.data = data;
+    this.config.loader(filter).subscribe((tableData) => {
+      this.data = tableData.data;
+
+      this.pages = [];
+      const totalPages = tableData.total / this.currentPageSize;
+      for (let i = 1; i <= totalPages; i++) {
+        this.pages.push(i);
+      }
     });
   }
 
@@ -77,7 +92,7 @@ export class NgTableComponent implements OnInit {
     });
 
     return {
-      page: 1,
+      page: this.currentPage,
       count: this.currentPageSize,
       sorting: sorting,
       filter: filter,

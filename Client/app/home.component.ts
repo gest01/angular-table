@@ -1,5 +1,5 @@
 import { Http } from "@angular/http";
-import { ITableConfig } from "./ng-table/table/tableconfig";
+import { ITableConfig, ITableData } from "./ng-table/table/tableconfig";
 import * as Rx from "rxjs";
 import { Component } from "@angular/core";
 
@@ -8,8 +8,6 @@ import { Component } from "@angular/core";
     templateUrl: "home.component.html",
 })
 export class HomeComponent {
-
-    public rows: any[] = [];
 
     public page: number = 1;
     public itemsPerPage: number = 10;
@@ -34,22 +32,27 @@ export class HomeComponent {
                 filterData: [{ id: 1, name: "f1" }, { id: 2, name: "f2" }, { id: 3, name: "f3" }],
                 filtering: { placeholder: "Filter by type" },
             },
+            {
+                title: "Date From",
+                name: "dateFrom",
+            },
+            {
+                title: "Date To",
+                name: "dateTo",
+            },
         ],
         loader: (filter: any) => {
             console.log(filter);
             return this.http.post("http://localhost:58159/api/values/all", filter)
-                .map((response) => response.json() as any[]);
+                .map((response) => response.json() as ITableData);
         },
     };
-
-    private data: any[];
 
     public constructor(
         private http: Http,
     ) { }
 
     public onChangeTable(config: any, page: any = { page: this.page, itemsPerPage: this.itemsPerPage }): any {
-        this.rows = this.data;
     }
 
     public onCellClick(data: any): any {

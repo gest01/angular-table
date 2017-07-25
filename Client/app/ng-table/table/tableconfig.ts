@@ -1,6 +1,11 @@
 import * as Rx from "rxjs";
 
-export type IDataLoader = (filter: any) => Rx.Observable<any[]>;
+export type IDataLoader = (filter: any) => Rx.Observable<ITableData>;
+
+export interface ITableData {
+    data: any[];
+    total: number;
+}
 
 export interface ITableConfig {
     paging: boolean;

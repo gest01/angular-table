@@ -22,10 +22,13 @@ namespace Api.Controllers
         [Route("all")]
         public async Task<IHttpActionResult> GetAll(FilterDto filter)
         {
-            var result = await GetValuesAsync();
-            result = result.Skip(filter.Count * (filter.Page - 1 )).Take(filter.Count);
+            var total = await GetValuesAsync();
+            var result = total.Skip(filter.Count * (filter.Page - 1 )).Take(filter.Count);
             result = result.AsQueryable().ApplyFilter(filter);
-            return Ok(result);
+            return Ok(new {
+                Total = total.Count(),
+                Data = result
+            });
         }
 
         private Task<IEnumerable<Data>> GetValuesAsync()
@@ -33,7 +36,7 @@ namespace Api.Controllers
             int typeCount = 0;
 
             List<Data> values = new List<Data>();
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 480; i++)
             {
                 values.Add(new Data
                 {

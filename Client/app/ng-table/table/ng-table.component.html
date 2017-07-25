@@ -33,6 +33,14 @@
   </tbody>
 </table>
 
-<div *ngIf="config.paging" class="btn-group" role="group" aria-label="...">
-  <button *ngFor="let pageSize of config.pagerSizes" (click)="changePageSize(pageSize)" [ngClass]="{ 'btn-primary' : pageSize == currentPageSize }" class="btn btn-default">{{ pageSize }}</button>
+<div class="row" *ngIf="config.paging">
+  <div  class="btn-group" role="group" aria-label="...">
+    <button *ngFor="let pageSize of config.pagerSizes" (click)="changePageSize(pageSize)" [ngClass]="{ 'btn-primary' : pageSize == currentPageSize }"
+      class="btn btn-default">{{ pageSize }}</button>
+  </div>
+
+  <div class="btn-group" role="group" aria-label="...">
+    <button *ngFor="let page of pages" (click)="changePage(page)" [ngClass]="{ 'btn-primary' : page == currentPage }"
+      class="btn btn-default">{{ page }}</button>
+  </div>
 </div>

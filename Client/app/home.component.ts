@@ -19,6 +19,8 @@ export class HomeComponent {
 
     public config: ITableConfig = {
         paging: true,
+        pagerSizes: [10, 25, 50],
+        defaultPageSize: 10,
         showFilterRow: true,
         cssClasses: "table-striped table-bordered table-condensed table-hover",
         filtering: { filterString: "" },

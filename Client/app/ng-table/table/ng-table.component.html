@@ -2,7 +2,8 @@
 
   <thead>
     <tr role="row">
-      <th *ngFor="let column of config.columns" class="clickable" ngClass="{{column.cssClasses || ''}}"  [ngTableSorting]="config" [column]="column" (sortChanged)="onChangeTable($event)" >
+      <th *ngFor="let column of config.columns" class="clickable" ngClass="{{column.cssClasses || ''}}" [ngTableSorting]="config"
+        [column]="column" (sortChanged)="onChangeTable($event)">
         {{column.title}}
         <i *ngIf="config && column.sort" class="glyphicon" [ngClass]="{'glyphicon-chevron-down': column.sort === 'desc', 'glyphicon-chevron-up': column.sort === 'asc'}"></i>
       </th>
@@ -15,6 +16,7 @@
         <span [ngSwitch]="column.filterType">
         <span *ngSwitchCase="'select'">
              <select class="form-control input-sm" [ngTableFiltering]="column.filtering" (tableChanged)="onChangeTable(config)">
+               <option></option>
                <option *ngFor="let c of column.filterData" [value]="c.id" >{{c.name}}</option>
              </select>
           </span>
@@ -30,3 +32,7 @@
     </tr>
   </tbody>
 </table>
+
+<div *ngIf="config.paging" class="btn-group" role="group" aria-label="...">
+  <button *ngFor="let pageSize of config.pagerSizes" (click)="changePageSize(pageSize)" [ngClass]="{ 'btn-primary' : pageSize == currentPageSize }" class="btn btn-default">{{ pageSize }}</button>
+</div>

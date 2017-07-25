@@ -17,11 +17,13 @@ export class NgTableComponent implements OnInit {
   @Output() public cellClicked: EventEmitter<any> = new EventEmitter();
 
   public data: any[];
+  public currentPageSize: number;
 
   public constructor(private sanitizer: DomSanitizer) {
   }
 
   public ngOnInit(): void {
+    this.currentPageSize = this.config.defaultPageSize;
     this.loadData();
   }
 
@@ -47,6 +49,11 @@ export class NgTableComponent implements OnInit {
     this.cellClicked.emit({ row, column });
   }
 
+  public changePageSize(pageSize: number) {
+    this.currentPageSize = pageSize;
+    this.loadData();
+  }
+
   private loadData(): void {
     const filter = this.getFilter();
     this.config.loader(filter).subscribe((data) => {
@@ -70,8 +77,8 @@ export class NgTableComponent implements OnInit {
     });
 
     return {
-      page: 2,
-      count: 25,
+      page: 1,
+      count: this.currentPageSize,
       sorting: sorting,
       filter: filter,
     };

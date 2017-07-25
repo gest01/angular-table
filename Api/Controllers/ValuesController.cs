@@ -23,7 +23,7 @@ namespace Api.Controllers
         public async Task<IHttpActionResult> GetAll(FilterDto filter)
         {
             var result = await GetValuesAsync();
-            result = result.Skip(filter.Count * filter.Page).Take(filter.Count);
+            result = result.Skip(filter.Count * (filter.Page - 1 )).Take(filter.Count);
             result = result.AsQueryable().ApplyFilter(filter);
             return Ok(result);
         }

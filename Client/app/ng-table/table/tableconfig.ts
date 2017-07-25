@@ -9,6 +9,8 @@ export interface ITableConfig {
     filtering: any;
     columns: ITableColumn[];
     loader: IDataLoader;
+    pagerSizes?: number[];
+    defaultPageSize?: number;
 }
 
 export interface ITableColumn {

@@ -22,11 +22,11 @@ namespace Api.Controllers
         [Route("all")]
         public async Task<IHttpActionResult> GetAll(FilterDto filter)
         {
-            var total = await GetValuesAsync();
-            var result = total.Skip(filter.Count * (filter.Page - 1 )).Take(filter.Count);
-            result = result.AsQueryable().ApplyFilter(filter);
+            var values = (await GetValuesAsync()).AsQueryable().ApplyFilter(filter);
+            var result = values.Skip(filter.Count * (filter.Page - 1 )).Take(filter.Count);
+
             return Ok(new {
-                Total = total.Count(),
+                Total = values.Count(),
                 Data = result
             });
         }

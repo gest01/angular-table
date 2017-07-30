@@ -17,6 +17,8 @@ export class NgTableComponent implements OnInit {
   public currentPageSize: number;
   public currentPage: number;
   public pages: number[] = [];
+  public pagerHasNext: boolean;
+  public pagerHasPrevious: boolean;
 
   public ngOnInit(): void {
     this.currentPageSize = this.config.defaultPageSize;
@@ -58,12 +60,22 @@ export class NgTableComponent implements OnInit {
     this.config.getData(filter).subscribe((tableData) => {
       this.data = tableData.data;
 
-      this.pages = [];
-      const totalPages = tableData.total / this.currentPageSize;
       const offset = (tableData.total % this.currentPageSize) > 0 ? 1 : 0;
-      for (let i = 1; i <= (totalPages + offset); i++) {
-        this.pages.push(i);
+      const pagerTotalPages = Math.round((tableData.total / this.currentPageSize));
+      const maxLength = 8;
+
+      this.pagerHasPrevious = this.currentPage > 1;
+      this.pagerHasNext = this.currentPage < pagerTotalPages;
+
+      if (this.pages.length === 0 || this.pages.indexOf(this.currentPage) === -1) {
+        this.pages = [];
+        const elements = Math.min(this.currentPage + maxLength, pagerTotalPages + offset);
+        for (let i = this.currentPage; i < elements; i++) {
+          this.pages.push(i);
+        }
+
       }
+
     });
   }
 

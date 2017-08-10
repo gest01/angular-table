@@ -1,6 +1,7 @@
 import * as Rx from "rxjs";
 
 export type IDataLoader = (filter: any) => Rx.Observable<ITableData>;
+export type OnClickHandler = (item: any, column: ITableColumn) => void;
 
 export interface ITableData {
     data: any[];
@@ -21,6 +22,8 @@ export interface ITableConfig {
 export interface ITableColumn {
     title: string;
     name: string;
+
+    onClick?: OnClickHandler;
 
     /**
      * select

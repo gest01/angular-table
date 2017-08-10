@@ -40,8 +40,13 @@ export class NgTableComponent implements OnInit {
         return row[propertyName];
     }
 
-    public cellClick(row: any, column: any): void {
-        this.cellClicked.emit({ row, column });
+    public cellClick(row: any, column: ITableColumn): void {
+
+        if (column.format === "button" || column.format === "popover") {
+            column.onClick(row, column);
+        } else {
+            this.cellClicked.emit({ row, column: column.name });
+        }
     }
 
     public changePageSize(pageSize: number) {

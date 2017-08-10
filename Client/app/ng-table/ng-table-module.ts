@@ -5,9 +5,10 @@ import { NgTableComponent } from "./table/ng-table.component";
 import { NgTableFilteringDirective } from "./table/ng-table-filtering.directive";
 import { NgTablePagingDirective } from "./table/ng-table-paging.directive";
 import { NgTableSortingDirective } from "./table/ng-table-sorting.directive";
+import { PopoverModule } from "ngx-bootstrap/popover";
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [CommonModule, PopoverModule.forRoot()],
   declarations: [NgTableComponent, NgTableFilteringDirective, NgTablePagingDirective, NgTableSortingDirective],
   exports: [NgTableComponent, NgTableFilteringDirective, NgTablePagingDirective, NgTableSortingDirective]
 })

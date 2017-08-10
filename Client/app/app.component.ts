@@ -1,15 +1,17 @@
 import { format } from "url";
 import { Component } from "@angular/core";
 import { Http } from "@angular/http";
-import { ITableConfig, ITableData } from "./ng-table/table/tableconfig";
+import { ITableConfig, ITableData, ITableColumn } from "./ng-table/table/tableconfig";
 
 import "../custom.css";
+import { BsModalService, BsModalRef } from "ngx-bootstrap/modal";
+import { DialogService } from "./dialog.service";
 
 @Component({
     selector: "my-app",
     templateUrl: "app.component.html",
 })
-export class AppComponent  {
+export class AppComponent {
 
     public config: ITableConfig = {
         paging: true,
@@ -19,6 +21,16 @@ export class AppComponent  {
         cssClasses: "table-striped table-bordered table-condensed table-hover",
         filtering: { filterString: "" },
         columns: [
+            {
+                title: "PopOver", name: "id", format: "popover", onClick: (item: any, column: ITableColumn) => {
+                    this.onButtonClicked(item, column);
+                },
+            },
+            {
+                title: "Button", name: "id", format: "button", onClick: (item: any, column: ITableColumn) => {
+                    this.onButtonClicked(item, column);
+                },
+            },
             { title: "ID", name: "id", enableSorting: false },
             { title: "Name", name: "name", filtering: { filterString: "", placeholder: "Filter by name" } },
             {
@@ -48,7 +60,12 @@ export class AppComponent  {
 
     public constructor(
         private http: Http,
+        private modalService: DialogService,
     ) { }
+
+    public onButtonClicked(item: any, column: ITableColumn) {
+        this.modalService.openModalWithComponent();
+    }
 
     public onCellClick(data: any): any {
         console.log(data);
